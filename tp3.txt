@@ -1,0 +1,46 @@
+EXERCICE 1:
+
+1) create table montable
+create table etudiant (net number (1) primary key, nom varchar(20), age number(2));
+
+2) insert into etudiant values (1, 'Lopez', 22);
+
+clé primaire est unique donc on ne peut pas rajouter une autre ligne avec le net=3
+
+update etudiant set age=26 where upper(nom) like 'LO%'
+
+delete from etudiant where nom is nul
+
+4) alter table etudiant add constraint etudiant_age_ck check (age>=18)
+alter table etudiant modify net number(3);
+
+5) alter table etudiant add (adresse varchar(20));
+insert into etudiant values (13,'Lise',23,'Colmar');
+
+EXERCICE 2:
+
+1) create table cout( age number(3) primary key, tarif number(1), constraint cout_tarif_ck check (tarif between 1 and 3));
+
+
+2) alter table etudiant add constraint etudiant_age_fk foreign key (age) references cout (age);
+(avoir tous les ages et etudiant dans cout car ce sont des références)
+
+insert into etudiant values (12,'moule',27,null);
+-> ne fonctionne pas, car 27 n'est pas dans cout
+
+delete from cout where age=25;
+-> on ne peut pas, car 25 est dans etudiant
+
+EXERCICE 3:
+
+1) create table inscription net number (3) primary key, diplome varchar(20), constraint inscription_net_fk foreign key (net) references etudiant(net);
+
+insert into etudiant (25,'Marie',25,null);
+insert into inscription values(101,'master');
+-> ne fonctionne pas, car pas d'étudiant avec comme net 101
+
+insert into inscription values(25,'maitrise');
+
+2) alter table inscription drop constraint inscription_net_fk;
+alter table inscription add constraint inscription_net_fk foreign key net references etudiant(net) on delete cascade;
+
